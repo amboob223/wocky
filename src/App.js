@@ -448,6 +448,8 @@ useEffect(() => {
     setIndex((index - 1 + addresses.length) % addresses.length);
   };
 
+  console.log(last)
+  console.log(next)
 const handleAddressClick = async (address) => {
     setSelectedAddress(address);
     try {
@@ -590,9 +592,11 @@ const handleAddressClick = async (address) => {
       )}
 
       <div>
-       
-        <button onClick={last}>Last</button>
-        <button onClick={next}>Next</button>
+       <div>
+		<h2>selectedAddress</h2>
+		{selectedAddress}
+	   </div>
+        
         <h2>All Addresses:</h2>
         <ul>
           {addresses.map((address, idx) => (
