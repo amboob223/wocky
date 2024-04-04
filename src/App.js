@@ -2,6 +2,13 @@ import React, { useState,useEffect} from 'react';
 import { ethers } from 'ethers';
 import "./App.css"
 
+
+
+
+
+
+
+
 const Form = () => {
   // state variables
   const [connectedAddress, setConnectedAddress] = useState('');
@@ -132,7 +139,7 @@ const Form = () => {
 		"type": "function"
 	}
 ]
-      const contractAddress = "0x5b940Ffd2F6f50c124C6a536Ca4B1161b34A5860";
+      const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
       const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
       const rr = await contract.getAllAddresses();
       setAddresses(rr);
@@ -263,7 +270,7 @@ useEffect(() => {
 		"type": "function"
 	}
 ]
-       const contractAddress = "0x5b940Ffd2F6f50c124C6a536Ca4B1161b34A5860";
+       const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
     const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
     const selectedAddress = addresses[index % addresses.length];
     
@@ -294,8 +301,6 @@ useEffect(() => {
         const account = accounts[0];
         setConnectedAddress(account);
            setIsConnected(true);
-
-
       } catch (error) {
         console.log("Error connecting to MetaMask:", error);
       }
@@ -304,13 +309,12 @@ useEffect(() => {
     }
   };
 
+
  
 
   const write = async () => {
-	    if (!selectedAddress) {
-      console.error("No address selected");
-      return;
-    }
+	  
+    
 
     const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
     const ERC_abi =[
@@ -426,13 +430,13 @@ useEffect(() => {
 		"type": "function"
 	}
 ]
-    const contractAddress = "0x5b940Ffd2F6f50c124C6a536Ca4B1161b34A5860";
+    const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
     const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
     const wallet = new ethers.Wallet(privateKey, provider);
     const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
 	console.log(selectedAddress)
     console.log(connectedAddress)
-    const transaction = await contract.addReview(selectedAddress, review);
+    const transaction = await contract.addReview(selectedAddress || connectedAddress, review);
     await transaction.wait();
     console.log(transaction);
     console.log(review)
@@ -567,7 +571,7 @@ const handleAddressClick = async (address) => {
 		"type": "function"
 	}
 ] ; // Your ERC_abi array here
-      const contractAddress = "0x5b940Ffd2F6f50c124C6a536Ca4B1161b34A5860";
+      const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
       const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
       const fetchedReviews = await contract.getReview(address);
       const words = fetchedReviews.toString().split(",");
@@ -579,10 +583,12 @@ const handleAddressClick = async (address) => {
 
 
 
-  return (<div style={{ display: "flex", flexDirection: "row" }}>
+  return (
+	  <div>
+<div style={{ display: "flex", flexDirection: "row" }}>
       <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
       {isConnected && (
-        <div>
+		  <div>
           <input value={review} onChange={(e) => setReview(e.target.value)} />
           <br />
           {connectedAddress}
@@ -600,8 +606,8 @@ const handleAddressClick = async (address) => {
         <h2>All Addresses:</h2>
         <ul>
           {addresses.map((address, idx) => (
-            <li key={idx} onClick={() => handleAddressClick(address)}>{address}</li>
-          ))}
+			  <li key={idx} onClick={() => handleAddressClick(address)}>{address}</li>
+			  ))}
         </ul>
       </div>
 
@@ -609,16 +615,17 @@ const handleAddressClick = async (address) => {
         <h2>Reviews:</h2>
         <ul>
           {reviews.map((review, index) => (
-            <li key={index}>{review}</li>
-          ))}
+			  <li key={index}>{review}</li>
+			  ))}
         </ul>
       </div>
     </div>
+</div>
   );
 };
 
 function App() {
-  return (
+	return (
     <div className="App">
       <header className="App-header">
  
