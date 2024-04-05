@@ -294,20 +294,145 @@ useEffect(() => {
   }, [index, addresses]);
 
 
+  
   const connectMetamask = async () => {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const account = accounts[0];
-        setConnectedAddress(account);
-           setIsConnected(true);
-      } catch (error) {
-        console.log("Error connecting to MetaMask:", error);
-      }
-    } else {
-      console.log("MetaMask not detected.");
+  if (window.ethereum) {
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+      setConnectedAddress(account);
+      setIsConnected(true);
+      // Update addresses state after connecting
+    const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
+      const ERC_abi =[
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_review",
+				"type": "string"
+			}
+		],
+		"name": "addReview",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "addresses",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllAddresses",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getReview",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "reviewer",
+				"type": "address"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_review",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "people",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "reviewer",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+	const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
+    
+      const wallet = new ethers.Wallet(privateKey,provider)
+
+	  const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
+    
+      const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
+      const rr = await contract.getAllAddresses();
+      setAddresses(rr);
+    } catch (error) {
+      console.log("Error connecting to MetaMask:", error);
     }
-  };
+  } else {
+    console.log("MetaMask not detected.");
+  }
+};
 
 
  
@@ -585,7 +710,7 @@ const handleAddressClick = async (address) => {
 
   return (
 	  <div>
-<div style={{ display: "flex", flexDirection: "row" }}>
+<div style={{ display: "flex", flexDirection: "column" }}>
       <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
       {isConnected && (
 		  <div>
