@@ -1,6 +1,9 @@
 .App {
   text-align: center;
 }
+.other{
+  display: inline-block;
+}
 
 .App-logo {
   height: 40vmin;
@@ -35,4 +38,20 @@
   to {
     transform: rotate(360deg);
   }
+}
+other {
+  margin-top: 20px; /* Adjust the margin-top value to space out the sections */
+}
+
+.other h2 {
+  margin-bottom: 10px; /* Adjust the margin-bottom value to add space between section headers */
+}
+
+.other ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.other ul li {
+  margin-bottom: 5px; /* Adjust the margin-bottom value to add space between list items */
 }

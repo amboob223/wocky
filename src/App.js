@@ -139,7 +139,7 @@ const Form = () => {
 		"type": "function"
 	}
 ]
-      const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
+      const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
       const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
       const rr = await contract.getAllAddresses();
       setAddresses(rr);
@@ -270,7 +270,7 @@ useEffect(() => {
 		"type": "function"
 	}
 ]
-       const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
+       const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
     const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
     const selectedAddress = addresses[index % addresses.length];
     
@@ -421,7 +421,7 @@ useEffect(() => {
     
       const wallet = new ethers.Wallet(privateKey,provider)
 
-	  const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
+	  const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
     
       const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
       const rr = await contract.getAllAddresses();
@@ -555,7 +555,7 @@ useEffect(() => {
 		"type": "function"
 	}
 ]
-    const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
+    const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
     const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
     const wallet = new ethers.Wallet(privateKey, provider);
     const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
@@ -696,7 +696,7 @@ const handleAddressClick = async (address) => {
 		"type": "function"
 	}
 ] ; // Your ERC_abi array here
-      const contractAddress = "0x78D656d07Aa97ca5892342823aC8d5923753dbC0";
+      const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
       const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
       const fetchedReviews = await contract.getReview(address);
       const words = fetchedReviews.toString().split(",");
@@ -710,9 +710,13 @@ const handleAddressClick = async (address) => {
 
   return (
 	  <div>
-<div style={{ display: "flex", flexDirection: "column" }}>
-      <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
-      {isConnected && (
+<div> 
+	
+	<div style={{ display: "flex", flexDirection: "row",  gap: "40%"}}>
+	<div>
+    <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
+
+		 {isConnected && (
 		  <div>
           <input value={review} onChange={(e) => setReview(e.target.value)} />
           <br />
@@ -722,29 +726,36 @@ const handleAddressClick = async (address) => {
         </div>
       )}
 
-      <div>
-       <div>
+	</div>
+     
+
+      
+		
+	
+       <div className='other'>
 		<h2>selectedAddress</h2>
 		{selectedAddress}
-	   </div>
-        
+	
+         <div> 
         <h2>All Addresses:</h2>
         <ul>
           {addresses.map((address, idx) => (
 			  <li key={idx} onClick={() => handleAddressClick(address)}>{address}</li>
 			  ))}
         </ul>
-      </div>
+    
 
-      <div>
+    
         <h2>Reviews:</h2>
         <ul>
           {reviews.map((review, index) => (
 			  <li key={index}>{review}</li>
 			  ))}
-        </ul>
+        </ul>  
+		 </div>
       </div>
-    </div>
+    </div>  
+	</div>
 </div>
   );
 };
