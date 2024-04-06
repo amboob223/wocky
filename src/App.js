@@ -18,7 +18,7 @@ const Form = () => {
   const [reviews,setReviews] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [selectedAddress,setSelectedAddress] = useState("")
-
+	
 
 
   //we use this to display all the reviews
@@ -709,10 +709,10 @@ const handleAddressClick = async (address) => {
 
 
   return (
-	  <div>
-<div> 
+  <div style={{display:"flex",justifyItems:"center"}}>
+ 
 	
-	<div style={{ display: "flex", flexDirection: "row",  gap: "40%"}}>
+	<div style={{ display: "flex", flexDirection: "row", gap:"10%"}}>
 	<div>
     <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
 
@@ -753,9 +753,11 @@ const handleAddressClick = async (address) => {
 			  ))}
         </ul>  
 		 </div>
+		
+	</div> 
+
       </div>
-    </div>  
-	</div>
+
 </div>
   );
 };

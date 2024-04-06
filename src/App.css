@@ -55,3 +55,14 @@ other {
 .other ul li {
   margin-bottom: 5px; /* Adjust the margin-bottom value to add space between list items */
 }
+
+.outC {
+  display: flex;
+  justify-content: center; /* Horizontally center content */
+  align-items: center; /* Vertically center content */
+  height: 100vh; /* Adjust the height as needed */
+}
+
+.inC {
+  width: 80%; /* Adjust the width of the inner container */
+}
