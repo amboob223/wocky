@@ -163,9 +163,9 @@ const CarouselFadeExample = ({ addresses, handleAddressClick, setSelectedAddress
                 style={{ display: 'block', margin: '0 auto' }} // Center the image horizontally
                 onClick={() => handleAddressClick(address)} 
               />
-              <div className="carousel-caption">
-                <h3 className="caption-text">{address}</h3>
-             
+              <div className="carousel-caption" style={{background: "rgba(0, 0, 0, 0.5)"}}>
+                {/* <h3 className="caption-text">{address}</h3> */}
+                <p className='caption-text'>leave a Review</p>
               </div>
             </div>
           </Link>

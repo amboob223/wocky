@@ -734,14 +734,14 @@ return (
 />
         <h2>Selected Address</h2>
         {selectedAddress}
-        <div>
+        {/* <div>
           <h2>All Addresses:</h2>
           <ul>
             {addresses.map((address, idx) => (
               <li key={idx} onClick={() => handleAddressClick(address)}>{address}</li>
             ))}
           </ul>
-        </div>
+        </div> */}
         <h2>Reviews:</h2>
         <ul>
           {reviews.map((review, index) => (
