@@ -149,7 +149,7 @@ const CarouselFadeExample = ({ addresses, handleAddressClick, setSelectedAddress
   };
 
   return (
-    <Carousel fade onSelect={handleSelect}>
+    <Carousel onSelect={handleSelect} interval={null}>
       {addresses.map((address, index,review) => (
         <Carousel.Item key={index}>
           <Link to='/help'>
