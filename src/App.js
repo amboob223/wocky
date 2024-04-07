@@ -1,13 +1,9 @@
 import React, { useState,useEffect} from 'react';
 import { ethers } from 'ethers';
 import "./App.css"
-
-
-
-
-
-
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import CarouselFadeExample from './components/CarouselFadeExample';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const Form = () => {
   // state variables
@@ -18,7 +14,7 @@ const Form = () => {
   const [reviews,setReviews] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [selectedAddress,setSelectedAddress] = useState("")
-	
+
 
 
   //we use this to display all the reviews
@@ -561,8 +557,10 @@ useEffect(() => {
     const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
 	console.log(selectedAddress)
     console.log(connectedAddress)
+
     const transaction = await contract.addReview(selectedAddress || connectedAddress, review);
     await transaction.wait();
+	alert("okay its going on the blockchcain","you good");
     console.log(transaction);
     console.log(review)
   }
@@ -579,8 +577,11 @@ useEffect(() => {
 
   console.log(last)
   console.log(next)
-const handleAddressClick = async (address) => {
+  const handleAddressClick = async (address) => {
+
+
     setSelectedAddress(address);
+	
     try {
       const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
       const ERC_abi=[
@@ -708,63 +709,55 @@ const handleAddressClick = async (address) => {
 
 
 
-  return (
-  <div style={{display:"flex",justifyItems:"center"}}>
- 
-	
-	<div style={{ display: "flex", flexDirection: "row", gap:"10%"}}>
-	<div>
-    <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
-
-		 {isConnected && (
-		  <div>
-          <input value={review} onChange={(e) => setReview(e.target.value)} />
-          <br />
-          {connectedAddress}
-          <br />
-          <button onClick={write}>Write to chain</button>
+return (
+  <div style={{ display: "flex", justifyContent: "center" }}>
+    <div style={{ display: "flex", flexDirection: "row", gap: "10%" }}>
+      <div>
+        <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
+        {isConnected && (
+          <div>
+            <input value={review} onChange={(e) => setReview(e.target.value)} />
+            <br />
+            {connectedAddress}
+            <br />
+            <button onClick={write}>Write to chain</button>
+          </div>
+        )}
+      </div>
+      <div className='other'>
+	   <CarouselFadeExample
+  addresses={addresses}
+  reviews={reviews}
+  handleAddressClick={handleAddressClick}
+  setSelectedAddress={setSelectedAddress} // Add this prop
+  setReviews={setReviews} // Add this prop
+/>
+        <h2>Selected Address</h2>
+        {selectedAddress}
+        <div>
+          <h2>All Addresses:</h2>
+          <ul>
+            {addresses.map((address, idx) => (
+              <li key={idx} onClick={() => handleAddressClick(address)}>{address}</li>
+            ))}
+          </ul>
         </div>
-      )}
-
-	</div>
-     
-
-      
-		
-	
-       <div className='other'>
-		<h2>selectedAddress</h2>
-		{selectedAddress}
-	
-         <div> 
-        <h2>All Addresses:</h2>
-        <ul>
-          {addresses.map((address, idx) => (
-			  <li key={idx} onClick={() => handleAddressClick(address)}>{address}</li>
-			  ))}
-        </ul>
-    
-
-    
         <h2>Reviews:</h2>
         <ul>
           {reviews.map((review, index) => (
-			  <li key={index}>{review}</li>
-			  ))}
-        </ul>  
-		 </div>
-		
-	</div> 
-
+            <li key={index}>{review}</li>
+          ))}
+        </ul>
       </div>
-
-</div>
-  );
+    </div>
+  </div>
+);
 };
 
 function App() {
 	return (
-    <div className="App">
+		<Router>
+			<div className="App">
       <header className="App-header">
  
         
@@ -773,6 +766,8 @@ function App() {
        
       </header>
     </div>
+		</Router>
+    
   );
 }
 
