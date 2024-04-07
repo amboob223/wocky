@@ -4,6 +4,7 @@ import "./App.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import CarouselFadeExample from './components/CarouselFadeExample';
 import { BrowserRouter as Router } from 'react-router-dom';
+import Signup from "./components/signup";
 
 const Form = () => {
   // state variables
@@ -711,6 +712,7 @@ useEffect(() => {
 
 return (
   <div style={{ display: "flex", justifyContent: "center" }}>
+	<Signup/>
     <div style={{ display: "flex", flexDirection: "row", gap: "10%" }}>
       <div>
         <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
