@@ -1,3 +1,7 @@
 okay now we need to upload the photoon ipfs 
 and the address maps to it and the username will go on ipfs too or sql ? i think ipfs 
 to get the reviewsz to change we had to make a prop to go ub the carosuel
+
+instead of ipfs i will use a server but after this project i will redo the nft since nft stograe switched up the format 
+I think the issue im having is that we not saving the ipfs hash on the block chain or a database so in this one i will 
+use database and next one will be 

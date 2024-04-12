@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPFS DEMO</title>
+</head>
+<body>
+    <h1>File Upload</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label>FileName</label>
+        <input type="text" name="fileName">
+        <br/>
+        <label>Upload files</label>
+        <input type="file" name="file">
+        <br>
+        <input type="submit" value="submit">
+    </form>
+    <!-- <p>Name: <%= filename %></p>
+    <p>Link: <a href="https://ipfs.io/ipfs/<%= fileHash %>"><%= fileHash %></a></p> -->
+</body>
+</html>
