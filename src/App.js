@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CarouselFadeExample from './components/CarouselFadeExample';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Signup from "./components/signup";
+import axios from "axios";
 
 const Form = () => {
   // state variables
@@ -15,7 +16,30 @@ const Form = () => {
   const [reviews,setReviews] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [selectedAddress,setSelectedAddress] = useState("")
+  const [ipfsData, setIpfsData] = useState([]);
 
+
+
+
+
+
+  useEffect(() => {
+    getPics();
+  }, []); // Call getPics when component mounts
+
+
+const getPics = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/upload`);
+      if (response.data) {
+        setIpfsData(response.data);
+      } else {
+        console.error('Error fetching photo data: Invalid response');
+      }
+    } catch (error) {
+      console.error('Error fetching photo data:', error);
+    }
+  };
 
 
   //we use this to display all the reviews
@@ -712,65 +736,62 @@ useEffect(() => {
 
 return (
   <div style={{ display: "flex", justifyContent: "center" }}>
-	<Signup/>
-    <div style={{ display: "flex", flexDirection: "row", gap: "10%" }}>
-      <div>
-        <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
-        {isConnected && (
-          <div>
-            <input value={review} onChange={(e) => setReview(e.target.value)} />
-            <br />
-            {connectedAddress}
-            <br />
-            <button onClick={write}>Write to chain</button>
-          </div>
-        )}
-      </div>
-      <div className='other'>
-	   <CarouselFadeExample
-  addresses={addresses}
-  reviews={reviews}
-  handleAddressClick={handleAddressClick}
-  setSelectedAddress={setSelectedAddress} // Add this prop
-  setReviews={setReviews} // Add this prop
-/>
-        <h2>Selected Address</h2>
-        {selectedAddress}
-        {/* <div>
-          <h2>All Addresses:</h2>
+      <Signup />
+      <div style={{ display: "flex", flexDirection: "row", gap: "10%" }}>
+        <div>
+          <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
+          {isConnected && (
+            <div>
+              <input value={review} onChange={(e) => setReview(e.target.value)} />
+              <br />
+              {connectedAddress}
+              <br />
+              <button onClick={write}>Write to chain</button>
+            </div>
+          )}
+        </div>
+        <div className='other'>
+          {/* <CarouselFadeExample
+            addresses={addresses}
+            reviews={reviews}
+            handleAddressClick={handleAddressClick}
+            setSelectedAddress={setSelectedAddress}
+            setReviews={setReviews}
+          /> */}
+          <h2>Selected Address</h2>
+          {selectedAddress}
+          <h2>Reviews:</h2>
           <ul>
-            {addresses.map((address, idx) => (
-              <li key={idx} onClick={() => handleAddressClick(address)}>{address}</li>
+            {reviews.map((review, index) => (
+              <li key={index}>{review}</li>
             ))}
           </ul>
-        </div> */}
-        <h2>Reviews:</h2>
-        <ul>
-          {reviews.map((review, index) => (
-            <li key={index}>{review}</li>
-          ))}
-        </ul>
+         <CarouselFadeExample
+            addresses={ipfsData.map(item => item.address)}
+            ipfsHash={ipfsData.map(item => item.ipfs)}
+            setSelectedAddress={handleAddressClick} 
+			handleAddressClick={handleAddressClick}
+			setReviews={setReviews}
+			  reviews={reviews}
+
+          />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 function App() {
-	return (
-		<Router>
-			<div className="App">
-      <header className="App-header">
- 
-        
-              <Form />
-            
-       
-      </header>
-    </div>
-		</Router>
-    
+  return (
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <Form />
+        </header>
+      </div>
+    </Router>
   );
 }
+
 
 export default App;

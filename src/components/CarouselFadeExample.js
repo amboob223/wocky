@@ -1,6 +1,10 @@
 import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 
+import "../App.css"
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress }) => {
   if (!ipfsHash || ipfsHash.length === 0) {
     return <div>No images available</div>;

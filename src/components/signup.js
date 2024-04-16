@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import CarouselFadeExample from "./CarouselFadeExample";
 
+import '../App.css';
 const Signup = ({ setipfs }) => {
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
   const [photo, setPhoto] = useState(null);
   const [ipfs, setIpfs] = useState("");
-  const [ipfsData, setIpfsData] = useState([]);
+
 
   useEffect(() => {
     console.log('Updated IPFS Hash Array:', ipfs);
   }, [ipfs]);
 
-  useEffect(() => {
-    getPics();
-  }, []); // Call getPics when component mounts
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,18 +85,7 @@ const Signup = ({ setipfs }) => {
     }
   };
 
-const getPics = async () => {
-  try {
-    const response = await axios.get(`http://localhost:5000/upload`);
-    if (response.data) {
-      setIpfsData(response.data);
-    } else {
-      console.error('Error fetching photo data: Invalid response');
-    }
-  } catch (error) {
-    console.error('Error fetching photo data:', error);
-  }
-};
+
 
   return (
     <div>
@@ -138,11 +124,7 @@ const getPics = async () => {
         </form>
       </div>
    
-<CarouselFadeExample
-  addresses={ipfsData.map(item => item.address)}
-  ipfsHash={ipfsData.map(item => item.ipfs)}
-  setSelectedAddress={() => { }}
-/>
+
 </div>
   );
 };
