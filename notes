@@ -5,3 +5,6 @@ to get the reviewsz to change we had to make a prop to go ub the carosuel
 instead of ipfs i will use a server but after this project i will redo the nft since nft stograe switched up the format 
 I think the issue im having is that we not saving the ipfs hash on the block chain or a database so in this one i will 
 use database and next one will be 
+
+
+right now the app lets you signup wi
