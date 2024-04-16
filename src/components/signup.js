@@ -5,7 +5,7 @@ import '../App.css';
 const Signup = ({ setipfs }) => {
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
-  const [photo, setPhoto] = useState(null);
+  // const [photo, setPhoto] = useState(null);
   const [ipfs, setIpfs] = useState("");
 
 
@@ -20,10 +20,10 @@ const Signup = ({ setipfs }) => {
     if (name === "address") setAddress(value);
   };
 
-  const handlePhotoUpload = (event) => {
-    const uploadedPhoto = event.target.files[0];
-    setPhoto(uploadedPhoto);
-  };
+  // const handlePhotoUpload = (event) => {
+  //   const uploadedPhoto = event.target.files[0];
+  //   setPhoto(uploadedPhoto);
+  // };
 
   const connectMetamask = async (e) => {
     e.preventDefault()
@@ -70,7 +70,7 @@ const Signup = ({ setipfs }) => {
       const formData = new FormData();
       formData.append("username", username);
       formData.append("address", address);
-      formData.append("photo", photo);
+      // formData.append("photo", photo);
       formData.append("ipfs", ipfs);
 
       const response = await axios.post(`http://localhost:5000/upload`, formData);
@@ -92,9 +92,9 @@ const Signup = ({ setipfs }) => {
       <div className="help-container">
 
         <form onSubmit={handleSubmit}>
-          <h1> Let us Help </h1>
+          <h1> Sign up </h1>
           <div className="form-group">
-            <label htmlFor="username">Name:</label>
+            <label htmlFor="username">username:</label>
             <input
               type="text"
               name="username"
@@ -106,14 +106,11 @@ const Signup = ({ setipfs }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="address">Wallet:</label>
+            <label htmlFor="address">connect Wallet:</label>
             <button onClick={connectMetamask}>Connect</button>
-            <h1>{address}</h1>
+            <p>`Hello user ${address}`</p>
           </div>
-          <div className="form-group">
-            <label htmlFor="photo">Upload Photo:</label>
-            <input type="file" onChange={handlePhotoUpload} />
-          </div>
+         
           <div className="form-group">
             <label htmlFor="photo">Upload Photo:</label>
             <input type="file" onChange={otherhandlePhotoUpload} />

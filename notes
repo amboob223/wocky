@@ -8,3 +8,10 @@ use database and next one will be
 
 
 right now the app lets you signup wi
+
+we got to add
+    -styling
+    -payment for when a review is left 
+    -we need to ensure an address is only signed in once and that all portions are filled 
+    -dont put on ipfs until form submits
+    
