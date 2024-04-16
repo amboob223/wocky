@@ -22,18 +22,28 @@ const upload = multer({ storage: storage });
 // Route for file upload
 app.post("/upload", upload.single('photo'), async (req, res) => {
   try {
-    const { username, address } = req.body;
+    const { username, address,ipfs } = req.body;
     const photoPath = req.file ? req.file.path : null;
 
     // Insert data into PostgreSQL database
     const newData = await pool.query(
-      "INSERT INTO signup (username, address, photo_path) VALUES ($1, $2, $3) RETURNING *",
-      [username, address, photoPath]
+      "INSERT INTO signup (username, address, photo_path,ipfs) VALUES ($1, $2, $3,$4) RETURNING *",
+      [username, address, photoPath,ipfs]
     );
 
     res.json(newData.rows[0]);
   } catch (error) {
     console.error("Error inserting data:", error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+app.get("/upload", async (req, res) => {
+  try {
+    const photosData = await pool.query("SELECT * FROM signup");
+    res.json(photosData.rows);
+  } catch (error) {
+    console.error("Error getting photos:", error.message);
     res.status(500).send("Server Error");
   }
 });
