@@ -42,6 +42,8 @@ const getPics = async () => {
   };
 
 
+
+
   //we use this to display all the reviews
   useEffect(() => {
   const fetchData = async () => {
@@ -602,10 +604,11 @@ useEffect(() => {
 
   console.log(last)
   console.log(next)
-  const handleAddressClick = async (address) => {
+  const handleAddressClick = async(address) => {
 
 
     setSelectedAddress(address);
+console.log(address)
 	
     try {
       const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
@@ -727,11 +730,13 @@ useEffect(() => {
       const fetchedReviews = await contract.getReview(address);
       const words = fetchedReviews.toString().split(",");
       setReviews(words.slice(1));
+	  console.log({reviews})
     } catch (error) {
       console.error("Error fetching reviews:", error);
     }
   };
 
+  
 
 
 return (
@@ -751,13 +756,16 @@ return (
           )}
         </div>
         <div className='other'>
-          {/* <CarouselFadeExample
-            addresses={addresses}
-            reviews={reviews}
-            handleAddressClick={handleAddressClick}
-            setSelectedAddress={setSelectedAddress}
-            setReviews={setReviews}
-          /> */}
+         <CarouselFadeExample
+  addresses={ipfsData.map(item => item.address)}
+  ipfsHash={ipfsData.map(item => item.ipfs)}
+setSelectedAddress={setSelectedAddress}
+handleAddressClick={handleAddressClick}
+// Pass selectedAddress to the carousel
+  setReviews={setReviews} // Pass setReviews function to update reviews
+  reviews={reviews} // Pass reviews to the carousel
+/>
+ 
           <h2>Selected Address</h2>
           {selectedAddress}
           <h2>Reviews:</h2>
@@ -766,15 +774,8 @@ return (
               <li key={index}>{review}</li>
             ))}
           </ul>
-         <CarouselFadeExample
-            addresses={ipfsData.map(item => item.address)}
-            ipfsHash={ipfsData.map(item => item.ipfs)}
-            setSelectedAddress={handleAddressClick} 
-			handleAddressClick={handleAddressClick}
-			setReviews={setReviews}
-			  reviews={reviews}
+         
 
-          />
         </div>
       </div>
     </div>
