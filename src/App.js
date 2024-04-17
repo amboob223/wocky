@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState,useEffect, useMemo} from 'react';
 import { ethers } from 'ethers';
 import "./App.css"
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,8 +20,147 @@ const Form = () => {
 
 
 
+const ERC_abi = useMemo(() => [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "REVIEW_COST_ETHER",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_review",
+				"type": "string"
+			}
+		],
+		"name": "addReview",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "addresses",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllAddresses",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getReview",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "reviewer",
+				"type": "address"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_review",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "people",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "reviewer",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+],[]);
 
-
+const contractAddress = "0x680374c9F96641d87b53327b926B5A9c1Ae9CdA0"
 
   useEffect(() => {
     getPics();
@@ -49,120 +188,8 @@ const getPics = async () => {
   const fetchData = async () => {
     try {
       const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
-        const ERC_abi =[
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_review",
-				"type": "string"
-			}
-		],
-		"name": "addReview",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "addresses",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllAddresses",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "getReview",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			},
-			{
-				"internalType": "string[]",
-				"name": "_review",
-				"type": "string[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "people",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
-      const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
+  
+
       const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
       const rr = await contract.getAllAddresses();
       setAddresses(rr);
@@ -174,126 +201,14 @@ const getPics = async () => {
   };
 
   fetchData();
-}, []); // Empty dependency array means this effect will only run once after the component mounts
+}, [ERC_abi]); // Empty dependency array means this effect will only run once after the component mounts
 
 useEffect(() => {
     const fetchReviews = async () => {
      try {
         const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
-          const ERC_abi =[
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_review",
-				"type": "string"
-			}
-		],
-		"name": "addReview",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "addresses",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllAddresses",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "getReview",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			},
-			{
-				"internalType": "string[]",
-				"name": "_review",
-				"type": "string[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "people",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
-       const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
+          
+      
     const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
     const selectedAddress = addresses[index % addresses.length];
     
@@ -314,7 +229,7 @@ useEffect(() => {
     };
 
     fetchReviews();
-  }, [index, addresses]);
+  }, [index, addresses,ERC_abi]);
 
 
   
@@ -327,124 +242,12 @@ useEffect(() => {
       setIsConnected(true);
       // Update addresses state after connecting
     const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
-      const ERC_abi =[
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_review",
-				"type": "string"
-			}
-		],
-		"name": "addReview",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "addresses",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllAddresses",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "getReview",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			},
-			{
-				"internalType": "string[]",
-				"name": "_review",
-				"type": "string[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "people",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
+     
 	const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
     
       const wallet = new ethers.Wallet(privateKey,provider)
 
-	  const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
+	
     
       const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
       const rr = await contract.getAllAddresses();
@@ -465,120 +268,8 @@ useEffect(() => {
     
 
     const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
-    const ERC_abi =[
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_review",
-				"type": "string"
-			}
-		],
-		"name": "addReview",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "addresses",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllAddresses",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "getReview",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			},
-			{
-				"internalType": "string[]",
-				"name": "_review",
-				"type": "string[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "people",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
-    const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
+ 
+    
     const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
     const wallet = new ethers.Wallet(privateKey, provider);
     const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
@@ -612,120 +303,8 @@ console.log(address)
 	
     try {
       const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
-      const ERC_abi=[
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_review",
-				"type": "string"
-			}
-		],
-		"name": "addReview",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "addresses",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllAddresses",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "getReview",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			},
-			{
-				"internalType": "string[]",
-				"name": "_review",
-				"type": "string[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "people",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "reviewer",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-] ; // Your ERC_abi array here
-      const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
+    
+    
       const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
       const fetchedReviews = await contract.getReview(address);
       const words = fetchedReviews.toString().split(",");

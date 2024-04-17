@@ -6,17 +6,30 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAddressClick,setReviews }) => {
-  if (!ipfsHash || ipfsHash.length === 0) {
-    return <div>No images available</div>;
-  }
-   const fetchReviews = async (address) => {
-    try {
-      const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
-     const ERC_abi=[
+  const ERC_abi = [
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "REVIEW_COST_ETHER",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -33,7 +46,7 @@ const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAdd
 		],
 		"name": "addReview",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -123,10 +136,24 @@ const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAdd
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
-] ;
-      const contractAddress = "0xf779dED94139c7024A5DF3B1012A6c1Eb0025ABA";
-      const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
+]
+const contractAddress = "0x680374c9F96641d87b53327b926B5A9c1Ae9CdA0"
+
+  if (!ipfsHash || ipfsHash.length === 0) {
+    return <div>No images available</div>;
+  }
+   const fetchReviews = async (address) => {
+    try {
+      const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
+  const contract = new ethers.Contract(contractAddress, ERC_abi, provider);
       const fetchedReviews = await contract.getReview(address);
       const words = fetchedReviews.toString().split(",");
       return words.slice(1);
