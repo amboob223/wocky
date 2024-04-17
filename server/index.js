@@ -22,13 +22,19 @@ const upload = multer({ storage: storage });
 // Route for file upload
 app.post("/upload", upload.single('photo'), async (req, res) => {
   try {
-    const { username, address,ipfs } = req.body;
-    const photoPath = req.file ? req.file.path : null;
+    const { username, address, ipfs } = req.body;
 
-    // Insert data into PostgreSQL database
+    // Check if the address already exists
+    const existingAddress = await pool.query("SELECT * FROM signup WHERE address = $1", [address]);
+    if (existingAddress.rows.length > 0) {
+      return res.status(400).json({ error: "Address already exists" });
+    }
+
+    // If address doesn't exist, proceed with signup
+    const photoPath = req.file ? req.file.path : null;
     const newData = await pool.query(
-      "INSERT INTO signup (username, address, photo_path,ipfs) VALUES ($1, $2, $3,$4) RETURNING *",
-      [username, address, photoPath,ipfs]
+      "INSERT INTO signup (username, address, photo_path, ipfs) VALUES ($1, $2, $3, $4) RETURNING *",
+      [username, address, photoPath, ipfs]
     );
 
     res.json(newData.rows[0]);
@@ -37,6 +43,7 @@ app.post("/upload", upload.single('photo'), async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 app.get("/upload", async (req, res) => {
   try {

@@ -2,28 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
 import '../App.css';
+
 const Signup = ({ setipfs }) => {
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
-  // const [photo, setPhoto] = useState(null);
   const [ipfs, setIpfs] = useState("");
-
 
   useEffect(() => {
     console.log('Updated IPFS Hash Array:', ipfs);
   }, [ipfs]);
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "username") setUsername(value);
     if (name === "address") setAddress(value);
   };
-
-  // const handlePhotoUpload = (event) => {
-  //   const uploadedPhoto = event.target.files[0];
-  //   setPhoto(uploadedPhoto);
-  // };
 
   const connectMetamask = async (e) => {
     e.preventDefault()
@@ -67,6 +60,16 @@ const Signup = ({ setipfs }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Only proceed if both username and address are filled
+      if (!username || !address) {
+        console.error("Please fill in both username and address.");
+        return;
+      }
+      
+      // Call other photo upload method to upload to IPFS
+      await otherhandlePhotoUpload(e);
+
+      // Form submission
       const formData = new FormData();
       formData.append("username", username);
       formData.append("address", address);
@@ -75,26 +78,24 @@ const Signup = ({ setipfs }) => {
 
       const response = await axios.post(`http://localhost:5000/upload`, formData);
       if (response.status === 200) {
-        console.log("form went through");
-        alert("You good bro");
+        console.log("Form submitted successfully");
+        alert("You're all set!");
       } else {
-        console.error("form submission failed", response.statusText);
+        console.error("Form submission failed:", response.statusText);
       }
     } catch (error) {
-      console.error("error submit form", error.message);
+      alert("you already have an address")
+      console.error("Error submitting form:", error.message);
     }
   };
-
-
 
   return (
     <div>
       <div className="help-container">
-
         <form onSubmit={handleSubmit}>
-          <h1> Sign up </h1>
+          <h1>Sign up</h1>
           <div className="form-group">
-            <label htmlFor="username">username:</label>
+            <label htmlFor="username">Username:</label>
             <input
               type="text"
               name="username"
@@ -106,11 +107,10 @@ const Signup = ({ setipfs }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="address">connect Wallet:</label>
+            <label htmlFor="address">Connect Wallet:</label>
             <button onClick={connectMetamask}>Connect</button>
-            <p>`Hello user ${address}`</p>
+            <p>Hello user {address}</p>
           </div>
-         
           <div className="form-group">
             <label htmlFor="photo">Upload Photo:</label>
             <input type="file" onChange={otherhandlePhotoUpload} />
@@ -120,9 +120,7 @@ const Signup = ({ setipfs }) => {
           </button>
         </form>
       </div>
-   
-
-</div>
+    </div>
   );
 };
 
