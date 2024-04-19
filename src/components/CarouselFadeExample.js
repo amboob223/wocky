@@ -179,7 +179,9 @@ const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
   };
 
   return (
-    <Carousel onSelect={handleSelect}  interval={null}>
+	<div >
+
+    <Carousel style={{width:"100%",height:"20%"}} onSelect={handleSelect}  interval={null}>
       {addresses.map((address, index) => (
         <Carousel.Item key={index}>
           <div style={{ position: 'relative' }}>
@@ -189,6 +191,7 @@ const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
               src={ipfsHash[index]}
               alt={`carousel-item-${index}`}
               width="300px"
+			  height={"200px"}
               style={{ display: 'block', margin: '0 auto' }}
              onClick={() => {
                 setSelectedAddress(address);
@@ -202,6 +205,7 @@ const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
         </Carousel.Item>
       ))}
     </Carousel>
+	</div>
   );
 };
 

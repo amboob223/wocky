@@ -225,6 +225,7 @@ useEffect(() => {
       console.error("Selected address is null or undefined");
     }
   } catch (error) {
+    alert("naw pick a address")
     console.error("Error fetching reviews:", error);
   }
      
@@ -267,26 +268,40 @@ useEffect(() => {
 
 
  
+const write = async () => {
+    try {
+        if (!selectedAddress || selectedAddress === '') {
+          alert("choose an address")
+            console.error("Please provide a valid selectedAddress.");
+            return;
+        }
 
-  const write = async () => {
-	  
-    
+        const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
+        const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
+        const wallet = new ethers.Wallet(privateKey, provider);
 
-    const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
- 
-    
-    const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
-    const wallet = new ethers.Wallet(privateKey, provider);
-    const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
-	console.log(selectedAddress)
-    console.log(connectedAddress)
+        const addressToUse = selectedAddress || connectedAddress;
 
-    const transaction = await contract.addReview(selectedAddress || connectedAddress, review); //i want the user to ask and get charged here 
-    await transaction.wait();
-	alert("okay its going on the blockchcain","you good");
-    console.log(transaction);
-    console.log(review)
-  }
+        if (!addressToUse || addressToUse === '') {
+            console.error("No address available to proceed.");
+            return;
+        }
+
+        const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
+
+        console.log("Selected Address:", addressToUse);
+        console.log("Connected Address:", connectedAddress);
+
+        const transaction = await contract.addReview(addressToUse, review);
+
+        await transaction.wait();
+        console.log("Transaction successful:", transaction);
+        alert("The review has been added to the blockchain. You're good to go!");
+        console.log("Review:", review);
+    } catch (error) {
+        console.error("An error occurred:", error.message);
+    }
+}
 
    // Navigate to the next address
   const next = () => {
