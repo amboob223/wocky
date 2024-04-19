@@ -18,33 +18,11 @@ const Form = () => {
   const [selectedAddress,setSelectedAddress] = useState("")
   const [ipfsData, setIpfsData] = useState([]);
 
+  const [sign,setSign] = useState(false);
+const [compShow,setCompShow] = useState(false);
 
 
 const ERC_abi = useMemo(() => [
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_owner",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "REVIEW_COST_ETHER",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
 	{
 		"inputs": [
 			{
@@ -61,6 +39,24 @@ const ERC_abi = useMemo(() => [
 		"name": "addReview",
 		"outputs": [],
 		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -153,14 +149,20 @@ const ERC_abi = useMemo(() => [
 	},
 	{
 		"inputs": [],
-		"name": "withdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "REVIEW_COST_ETHER",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ],[]);
 
-const contractAddress = "0x680374c9F96641d87b53327b926B5A9c1Ae9CdA0"
+const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
 
   useEffect(() => {
     getPics();
@@ -240,6 +242,7 @@ useEffect(() => {
       const account = accounts[0];
       setConnectedAddress(account);
       setIsConnected(true);
+      show()
       // Update addresses state after connecting
     const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
      
@@ -252,6 +255,8 @@ useEffect(() => {
       const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
       const rr = await contract.getAllAddresses();
       setAddresses(rr);
+
+      
     } catch (error) {
       console.log("Error connecting to MetaMask:", error);
     }
@@ -276,7 +281,7 @@ useEffect(() => {
 	console.log(selectedAddress)
     console.log(connectedAddress)
 
-    const transaction = await contract.addReview(selectedAddress || connectedAddress, review);
+    const transaction = await contract.addReview(selectedAddress || connectedAddress, review); //i want the user to ask and get charged here 
     await transaction.wait();
 	alert("okay its going on the blockchcain","you good");
     console.log(transaction);
@@ -315,26 +320,53 @@ console.log(address)
     }
   };
 
-  
+  const signTrue  = async() =>{
+    setSign(true)
+  }
+
+    const show = ()=>{
+    setCompShow(true)
+  }
 
 
 return (
-  <div style={{ display: "flex", justifyContent: "center" }}>
-      <Signup />
-      <div style={{ display: "flex", flexDirection: "row", gap: "10%" }}>
-        <div>
-          <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
+  <div className="form-container" style={{ display: "flex", justifyContent: "center" }}>
+          <p>If you have an account just connect your wallet if no account sign up to leave a review </p>
+          
+          <div style={{ display: "flex", flexDirection: "row",  justifyItems:"space-between"}}>
+            <div  className="metamask-container">
+            { !sign && <button onClick={signTrue}> signup</button>
+}
+
+          {
+            sign&&
+
+          
+          <div style={{ display: "flex", justifyContent:"row" }} >
+
+      
+        <Signup />
+
+        
+      </div>}
+     {!sign && <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
+}    
           {isConnected && (
             <div>
               <input value={review} onChange={(e) => setReview(e.target.value)} />
               <br />
-              {connectedAddress}
+              {(connectedAddress)&& (
+                <p>you are connected</p>
+          )}
               <br />
               <button onClick={write}>Write to chain</button>
             </div>
           )}
         </div>
-        <div className='other'>
+          <div className="flex-container" style={{ display: "flex", flexDirection: "row", gap: "10%" }}>
+       
+       { compShow && <div className='other'>
+          
          <CarouselFadeExample
   addresses={ipfsData.map(item => item.address)}
   ipfsHash={ipfsData.map(item => item.ipfs)}
@@ -345,7 +377,7 @@ handleAddressClick={handleAddressClick}
   reviews={reviews} // Pass reviews to the carousel
 />
  
-          <h2>Selected Address</h2>
+          <h2>Review This Address</h2>
           {selectedAddress}
           <h2>Reviews:</h2>
           <ul>
@@ -354,9 +386,14 @@ handleAddressClick={handleAddressClick}
             ))}
           </ul>
          
-
-        </div>
+            
+        </div>}
       </div>
+          </div>
+         
+       
+      
+    
     </div>
   );
 };

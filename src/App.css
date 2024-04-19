@@ -67,3 +67,18 @@ other {
 .inC {
   width: 80%; /* Adjust the width of the inner container */
 }
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.metamask-container {
+  margin-bottom: 20px;
+}

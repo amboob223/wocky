@@ -11,30 +11,6 @@ const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAdd
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_owner",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "REVIEW_COST_ETHER",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
 				"name": "_address",
 				"type": "address"
 			},
@@ -47,6 +23,24 @@ const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAdd
 		"name": "addReview",
 		"outputs": [],
 		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -139,13 +133,19 @@ const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAdd
 	},
 	{
 		"inputs": [],
-		"name": "withdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "REVIEW_COST_ETHER",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]
-const contractAddress = "0x680374c9F96641d87b53327b926B5A9c1Ae9CdA0"
+const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
 
   if (!ipfsHash || ipfsHash.length === 0) {
     return <div>No images available</div>;

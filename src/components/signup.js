@@ -7,7 +7,7 @@ const Signup = ({ setipfs }) => {
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
   const [ipfs, setIpfs] = useState("");
-
+ 
   useEffect(() => {
     console.log('Updated IPFS Hash Array:', ipfs);
   }, [ipfs]);
@@ -25,6 +25,8 @@ const Signup = ({ setipfs }) => {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
         setAddress(account);
+        
+        
       } catch {
         console.log("MetaMask not detected.");
       }
@@ -33,6 +35,11 @@ const Signup = ({ setipfs }) => {
 
   const otherhandlePhotoUpload = async (event) => {
     try {
+          if (!event.target.files || event.target.files.length === 0) {
+      console.error('No files selected for upload');
+      return;
+    }
+
       const uploadedPhoto = event.target.files[0];
       const formData = new FormData();
       formData.append('file', uploadedPhoto);
@@ -83,20 +90,24 @@ const Signup = ({ setipfs }) => {
       } else {
         console.error("Form submission failed:", response.statusText);
       }
+    
+      
     } catch (error) {
       alert("you already have an address")
       console.error("Error submitting form:", error.message);
     }
   };
 
+  
+
   return (
     <div>
       <div className="help-container">
         <form onSubmit={handleSubmit}>
-          <h1>Sign up</h1>
+          <h1>Sign up and upload</h1>
           <div className="form-group">
-            <label htmlFor="username">Username:</label>
-            <input
+            <label htmlFor="username">Username:
+             <input
               type="text"
               name="username"
               className="form-control"
@@ -104,12 +115,15 @@ const Signup = ({ setipfs }) => {
               value={username}
               onChange={handleInputChange}
               placeholder="Name"
+               style={{ width: "200px", padding: "5px", fontSize: "14px" }}
             />
+            </label>
+           
           </div>
           <div className="form-group">
             <label htmlFor="address">Connect Wallet:</label>
             <button onClick={connectMetamask}>Connect</button>
-            <p>Hello user {address}</p>
+            
           </div>
           <div className="form-group">
             <label htmlFor="photo">Upload Photo:</label>
