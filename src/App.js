@@ -17,7 +17,7 @@ const Form = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [selectedAddress,setSelectedAddress] = useState("")
   const [ipfsData, setIpfsData] = useState([]);
-
+const [cn,setcn] = useState(false)
   const [sign,setSign] = useState(false);
 const [compShow,setCompShow] = useState(false);
 
@@ -234,7 +234,9 @@ useEffect(() => {
     fetchReviews();
   }, [index, addresses,ERC_abi]);
 
-
+const cnc = () =>{
+  setcn(true)
+}
   
   const connectMetamask = async () => {
   if (window.ethereum) {
@@ -244,6 +246,7 @@ useEffect(() => {
       setConnectedAddress(account);
       setIsConnected(true);
       show()
+      cnc()
       // Update addresses state after connecting
     const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
      
@@ -347,32 +350,25 @@ console.log(address)
 return (
   <div className="form-container" style={{ display: "flex", justifyContent: "center" }}>
           <p>If you have an account just connect your wallet if no account sign up to leave a review </p>
-          
-          <div style={{ display: "flex", flexDirection: "row",  justifyItems:"space-between"}}>
-            <div  className="metamask-container">
-            { !sign && <button onClick={signTrue}> signup</button>
-}
+        <div style={{ display: "flex", flexDirection: "row", justifyItems: "space-between" }}>
+        <div className="metamask-container">
+          {!sign && !cn && <button onClick={signTrue}>Signup</button>}
+          {sign &&
+            <div style={{ display: "flex", justifyContent: "row" }}>
+              <Signup />
+            </div>
+          }
+          {!sign && <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>}
 
           {
-            sign&&
-
-          
-          <div style={{ display: "flex", justifyContent:"row" }} >
-
-      
-        <Signup />
-
-        
-      </div>}
-     {!sign && <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>
-}    
-          {isConnected && (
+          // I want to get rid of the signup butrton by this point 
+          isConnected && (
             <div>
               <input value={review} onChange={(e) => setReview(e.target.value)} />
               <br />
-              {(connectedAddress)&& (
-                <p>you are connected</p>
-          )}
+              {(connectedAddress) &&
+                <p>You are connected</p>
+              }
               <br />
               <button onClick={write}>Write to chain</button>
             </div>
@@ -381,7 +377,7 @@ return (
           <div className="flex-container" style={{ display: "flex", flexDirection: "row", gap: "10%" }}>
        
        { compShow && <div className='other'>
-          
+              
          <CarouselFadeExample
   addresses={ipfsData.map(item => item.address)}
   ipfsHash={ipfsData.map(item => item.ipfs)}

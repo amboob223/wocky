@@ -192,7 +192,7 @@ const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
               alt={`carousel-item-${index}`}
               width="300px"
 			  height={"200px"}
-              style={{ display: 'block', margin: '0 auto' }}
+              style={{ position:"inherit",display: 'block', margin: '0 auto' }}
              onClick={() => {
                 setSelectedAddress(address);
               
