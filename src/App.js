@@ -20,6 +20,7 @@ const Form = () => {
 const [cn,setcn] = useState(false)
   const [sign,setSign] = useState(false);
 const [compShow,setCompShow] = useState(false);
+ const [showReviews, setShowReviews] = useState(false); // Track if carousel has been clicked
 
 
 const ERC_abi = useMemo(() => [
@@ -162,7 +163,7 @@ const ERC_abi = useMemo(() => [
 	}
 ],[]);
 
-const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
+const contractAddress = "0xd549a769C274f766e604F25d6Ff97a7F394d045d"
 
   useEffect(() => {
     getPics();
@@ -231,8 +232,10 @@ useEffect(() => {
      
     };
 
-    fetchReviews();
-  }, [index, addresses,ERC_abi]);
+  if (showReviews) {
+      fetchReviews();
+    }
+  }, [index, addresses,ERC_abi,showReviews]);
 
 const cnc = () =>{
   setcn(true)
@@ -345,6 +348,9 @@ console.log(address)
     const show = ()=>{
     setCompShow(true)
   }
+const showReviewsOnClick = () => {
+    setShowReviews(true); // Set to true when carousel is clicked
+  };
 
 
 return (
@@ -386,13 +392,14 @@ handleAddressClick={handleAddressClick}
 // Pass selectedAddress to the carousel
   setReviews={setReviews} // Pass setReviews function to update reviews
   reviews={reviews} // Pass reviews to the carousel
+  onClick={showReviewsOnClick}
 />
  
           <h2>Review This Address</h2>
           {selectedAddress}
           <h2>Reviews:</h2>
           <ul>
-            {reviews.map((review, index) => (
+            {!showReviews && reviews.map((review, index) => (
               <li key={index}>{review}</li>
             ))}
           </ul>

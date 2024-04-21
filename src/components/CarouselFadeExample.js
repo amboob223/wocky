@@ -5,7 +5,7 @@ import "../App.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAddressClick,setReviews }) => {
+const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAddressClick,setReviews,showReviewsOnClick}) => {
   const ERC_abi = [
 	{
 		"inputs": [
@@ -145,7 +145,7 @@ const CarouselFadeExample = ({ addresses, ipfsHash, setSelectedAddress,handleAdd
 		"type": "function"
 	}
 ]
-const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
+const contractAddress = "0xd549a769C274f766e604F25d6Ff97a7F394d045d"
 
   if (!ipfsHash || ipfsHash.length === 0) {
     return <div>No images available</div>;
@@ -181,7 +181,7 @@ const contractAddress = "0x5BB7430b1f7356BF0aD02A1aEb25888c2A8Ad6be"
   return (
 	<div >
 
-    <Carousel style={{width:"100%",height:"20%"}} onSelect={handleSelect}  interval={null}>
+    <Carousel style={{width:"100%",height:"20%"}} onSelect={handleSelect} onClick={showReviewsOnClick} interval={null}>
       {addresses.map((address, index) => (
         <Carousel.Item key={index}>
           <div style={{ position: 'relative' }}>
