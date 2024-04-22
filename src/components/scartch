@@ -950,3 +950,56 @@ function App() {
 
 
 export default App;
+
+
+
+
+const write = async () => {
+    try {
+        if (!selectedAddress || selectedAddress === '') {
+            alert("Choose an address");
+            console.error("Please provide a valid selectedAddress.");
+            return;
+        }
+
+        const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/4c2923555eab4c96b92c280bfffa8454");
+        const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
+        const wallet = new ethers.Wallet(privateKey, provider);
+
+        const addressToUse = selectedAddress || connectedAddress;
+
+        if (!addressToUse || addressToUse === '') {
+            console.error("No address available to proceed.");
+            return;
+        }
+
+        const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
+
+        console.log("Selected Address:", addressToUse);
+        console.log("Connected Address:", connectedAddress);
+
+        // Calculate the amount of Ether to transfer (for example, 0.1 ETH)
+        const etherAmount = ethers.utils.parseEther("0.1");
+
+        // Transfer Ether from the connected address to the contract
+        const transferTx = await wallet.sendTransaction({
+            to: contractAddress,
+            value: etherAmount
+        });
+
+        // Wait for the transfer transaction to be confirmed
+        await transferTx.wait();
+
+        // Make the review transaction
+        const reviewTx = await contract.addReview(addressToUse, review);
+
+        // Wait for the review transaction to be confirmed
+        await reviewTx.wait();
+
+        console.log("Transaction successful:", reviewTx);
+        alert("The review has been added to the blockchain. You're good to go!");
+        console.log("Review:", review);
+    } catch (error) {
+        console.error("An error occurred:", error.message);
+    }
+}

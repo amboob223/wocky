@@ -21,7 +21,9 @@ const [cn,setcn] = useState(false)
   const [sign,setSign] = useState(false);
 const [compShow,setCompShow] = useState(false);
  const [showReviews, setShowReviews] = useState(false); // Track if carousel has been clicked
+ const [transfer,setTransfer] = useState(false)
 
+    
 
 const ERC_abi = useMemo(() => [
 	{
@@ -244,6 +246,9 @@ const cnc = () =>{
   const connectMetamask = async () => {
   if (window.ethereum) {
     try {
+
+
+
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       const account = accounts[0];
       setConnectedAddress(account);
@@ -277,7 +282,7 @@ const cnc = () =>{
 const write = async () => {
     try {
         if (!selectedAddress || selectedAddress === '') {
-          alert("choose an address")
+            alert("Please choose an address.");
             console.error("Please provide a valid selectedAddress.");
             return;
         }
@@ -286,29 +291,31 @@ const write = async () => {
         const privateKey = "5ccb69e0e14929628bdbdd4fbb1159f730f55c26eea04f8f370e6664546a5786";
         const wallet = new ethers.Wallet(privateKey, provider);
 
-        const addressToUse = selectedAddress || connectedAddress;
-
-        if (!addressToUse || addressToUse === '') {
-            console.error("No address available to proceed.");
-            return;
-        }
-
-        const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
-
-        console.log("Selected Address:", addressToUse);
-        console.log("Connected Address:", connectedAddress);
-
-        const transaction = await contract.addReview(addressToUse, review);
-
+        // Sending Ether to the selected address
+        const tx = {
+            to: selectedAddress,
+            value: ethers.parseEther("0.01")
+        };
+        const transaction = await wallet.sendTransaction(tx);
         await transaction.wait();
+
+        // Adding review to the blockchain
+        const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
+        const addReviewTx = await contract.addReview(selectedAddress, review);
+        await addReviewTx.wait();
+
+        // Alert and log success
         console.log("Transaction successful:", transaction);
+        console.log("Review added to the blockchain:", addReviewTx);
         alert("The review has been added to the blockchain. You're good to go!");
         console.log("Review:", review);
+
     } catch (error) {
         console.error("An error occurred:", error.message);
     }
 }
-//
+
+
    // Navigate to the next address
   const next = () => {
     setIndex((index + 1) % addresses.length);
@@ -321,6 +328,9 @@ const write = async () => {
 
   console.log(last)
   console.log(next)
+
+
+
   const handleAddressClick = async(address) => {
 
 
@@ -352,6 +362,15 @@ const showReviewsOnClick = () => {
     setShowReviews(true); // Set to true when carousel is clicked
   };
 
+ const trans = ()=> {
+  try {
+
+     setTransfer(true)
+  } catch (error) {
+    
+  }
+     
+    }
 
 return (
   <div className="form-container" style={{ display: "flex", justifyContent: "center" }}>
@@ -364,7 +383,15 @@ return (
               <Signup />
             </div>
           }
-          {!sign && <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>}
+          {!transfer&& !sign &&
+            <button  onClick={trans}>transfer</button>
+            // in this part the logic of a transaction 
+
+
+
+
+}
+          {!sign && transfer&& <button onClick={connectMetamask} title='Connect to MetaMask'>Connect</button>}
 
           {
           // I want to get rid of the signup butrton by this point 
@@ -417,11 +444,18 @@ handleAddressClick={handleAddressClick}
 };
 
 function App() {
+  //state 
+    
   return (
     <Router>
       <div className="App">
         <header className="App-header">
-          <Form />
+         
+          {
+
+            <Form />
+          }
+          
         </header>
       </div>
     </Router>
