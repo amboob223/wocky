@@ -294,8 +294,12 @@ const write = async () => {
         // Sending Ether to the selected address
         const tx = {
             to: selectedAddress,
-            value: ethers.parseEther("0.01")
+            value: ethers.parseEther("0.0025")
+
+
         };
+
+        alert("you have paid and you review is coming")
         const transaction = await wallet.sendTransaction(tx);
         await transaction.wait();
 
