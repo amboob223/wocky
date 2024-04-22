@@ -1003,3 +1003,48 @@ const write = async () => {
         console.error("An error occurred:", error.message);
     }
 }
+
+
+//  try {
+//         if (!selectedAddress || selectedAddress === '') {
+//             alert("Please choose an address.");
+//             console.error("Please provide a valid selectedAddress.");
+//             return;
+//         }
+
+//         // Check if MetaMask is installed
+//         if (window.ethereum) {
+//             // Prompt user to connect their MetaMask wallet
+//             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+//             const connectedAddress = accounts[0]; // Get the connected address from MetaMask
+//             const provider = new ethers.JsonRpcProvider(window.ethereum);
+//             const wallet = provider.getSigner();
+
+//             // Sending Ether to the selected address
+//             const tx = {
+//                 to: selectedAddress,
+//                 value: ethers.parseEther("0.0025"),
+//                 from:connectedAddress
+//             };
+
+//             alert("You have paid and your review is coming.");
+//             const transaction = await wallet.sendTransaction(tx);
+//             await transaction.wait();
+
+//             // Adding review to the blockchain
+//             const contract = new ethers.Contract(contractAddress, ERC_abi, wallet);
+//             const addReviewTx = await contract.addReview(selectedAddress, review);
+//             await addReviewTx.wait();
+
+//             // Alert and log success
+//             console.log("Transaction successful:", transaction);
+//             console.log("Review added to the blockchain:", addReviewTx);
+//             alert("The review has been added to the blockchain. You're good to go!");
+//             console.log("Review:", review);
+//         } else {
+//             alert("MetaMask is not installed.");
+//         }
+//     } catch (error) {
+//         console.error("An error occurred:", error.message);
+//     }
+// }
